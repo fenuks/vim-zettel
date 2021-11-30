@@ -300,10 +300,6 @@ or `T` keys).
 >
    let g:vimwiki_markdown_link_ext = 1
 <
-                                                     *g:zettel_default_title*
-Text used for `%title` formatting string in new Zettel filename if title was
-not provided.
-
                                                      *g:zettel_date_format*
 Date format used for date metadata in front matter for a new zettel. It will
 need to be supported by the `strftime()` function.
@@ -327,6 +323,13 @@ The code below can serve as a template to start from.
      autocmd FileType vimwiki nmap gZ <Plug>ZettelReplaceFileWithLink
    augroup END
 <
+                                                     *g:zettel_default_title*
+Text used for `%title` formatting string in new Zettel filename if title was
+not provided.
+
+                                                     *g:zettel_default_wiki_nr*
+Specifies which vimwiki in `g:vimwiki_list` should be used for Zettelkasten.
+
                                                        *g:zettel_fzf_command*
 Vim-Zettel uses The Silver Searcher (ag) by default when searching through
 your files.  The g:zettel_fzf_command can be used to override the default
@@ -624,4 +627,4 @@ commit changes in wiki and synchronize them with external Git repository.
 * doc/zettel.txt: added ChangeLog and documented few variables.
 
 
-vim:tw=78:ts=8:ft=help
+vim:tw=78:ts=8:noet:ft=help:norl:
