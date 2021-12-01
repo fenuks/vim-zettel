@@ -1,16 +1,15 @@
 " format of a new zettel filename
 if !exists('g:zettel_format')
-  let g:zettel_format = "%y%m%d-%H%M"
+  let g:zettel_format = '%y%m%d-%H%M'
 endif
 
-
 function! s:wiki_yank_name()
-  let filename = expand("%")
-  let link = zettel#vimwiki#get_link(filename)
-  let clipboardtype=&clipboard
-  if clipboardtype=="unnamed"  
+  let l:filename = expand('%')
+  let l:link = zettel#vimwiki#get_link(l:filename)
+  let l:clipboardtype = &clipboard
+  if l:clipboardtype ==# 'unnamed'
     let @* = link
-  elseif clipboardtype=="unnamedplus"
+  elseif clipboardtype ==# 'unnamedplus'
     let @+ = link
   else
     let @@ = link
@@ -21,18 +20,13 @@ endfunction
 " replace file name under cursor which corresponds to a wiki file with a
 " corresponding Wiki link
 function! s:replace_file_with_link()
-  let filename = expand("<cfile>")
-  let link = zettel#vimwiki#get_link(filename)
-  execute "normal BvExa" . link
+  let l:filename = expand('<cfile>')
+  let l:link = zettel#vimwiki#get_link(l:filename)
+  execute 'normal BvExa' . link
 endfunction
-
-
-
-
 
 " make fulltext search in all VimWiki files using FZF and insert link to the
 " found file
-" command! -bang -nargs=* ZettelSearch call fzf#vim#ag(<q-args>, 
 command! -bang -nargs=* ZettelSearch call zettel#fzf#sink_onefile(<q-args>, 'zettel#fzf#wiki_search')
 
 command! -bang -nargs=* ZettelYankName call <sid>wiki_yank_name()
@@ -47,22 +41,18 @@ command! -buffer -nargs=* -complete=custom,vimwiki#tags#complete_tags
 command! -buffer ZettelBackLinks call zettel#vimwiki#backlinks()
 command! -buffer ZettelInbox call zettel#vimwiki#inbox()
 
+nnoremap <silent> <Plug>ZettelSearchMap :ZettelSearch<CR>
+nnoremap <silent> <Plug>ZettelYankNameMap :ZettelYankName<CR> 
+nnoremap <silent> <Plug>ZettelReplaceFileWithLink :call <sid>replace_file_with_link()<CR> 
+xnoremap <silent> <Plug>ZettelNewSelectedMap :call zettel#vimwiki#zettel_new_selected()<CR>
+
 if !exists('g:zettel_default_mappings')
   let g:zettel_default_mappings=1
 endif
 
-
-nnoremap <silent> <Plug>ZettelSearchMap :ZettelSearch<cr>
-nnoremap <silent> <Plug>ZettelYankNameMap :ZettelYankName<cr> 
-nnoremap <silent> <Plug>ZettelReplaceFileWithLink :call <sid>replace_file_with_link()<cr> 
-xnoremap <silent> <Plug>ZettelNewSelectedMap :call zettel#vimwiki#zettel_new_selected()<CR>
-
-
-if g:zettel_default_mappings==1
-  " inoremap [[ [[<esc>:ZettelSearch<CR>
+if g:zettel_default_mappings == 1
   imap <buffer> <silent> [[ [[<esc><Plug>ZettelSearchMap
   nmap <buffer> T <Plug>ZettelYankNameMap
-  " xnoremap z :call zettel#vimwiki#zettel_new_selected()<CR>
   xmap <buffer> z <Plug>ZettelNewSelectedMap
   nmap <buffer> gZ <Plug>ZettelReplaceFileWithLink
 endif

@@ -13,7 +13,7 @@ function! s:get_visual_selection()
   return join(lines, "\n")
 endfunction
 
-" this function is useful for comands in plugin/zettel.vim
+" this function is useful for commands in plugin/zettel.vim
 " set number of the active wiki
 function! zettel#vimwiki#set_active_wiki(number)
   " this buffer value is used by vimwiki#vars#get_wikilocal to retrieve
@@ -72,8 +72,8 @@ endfunction
 " markdown test for front matter end
 function! s:test_header_end_md(line, i)
   if a:i > 0 
-    let pos = matchstrpos(a:line, "^\s*---")
-    return pos[1]
+    let l:pos = matchstrpos(a:line, "^\s*---")
+    return l:pos[1]
   endif
   return -1
 endfunction
@@ -81,16 +81,13 @@ endfunction
 " vimwiki test fot front matter end
 function! s:test_header_end_wiki(line, i)
   " return false for all lines that start with % character
-  let pos = matchstrpos(a:line,"^\s*%")
-  if pos[1] > -1 
+  let l:pos = matchstrpos(a:line,"^\s*%")
+  if l:pos[1] > -1 
     return -1
   endif
   " first line which is not tag should be selected
   return 0
 endfunction
-
-let s:test_header_end = function(vimwiki#vars#get_wikilocal('syntax') ==? 'markdown' ? '<sid>test_header_end_md' : '<sid>test_header_end_wiki')
-
 
 " variables that depend on the wiki syntax
 if vimwiki#vars#get_wikilocal('syntax') ==? 'markdown'
@@ -237,7 +234,6 @@ function! zettel#vimwiki#find_header_end(filename)
   let Header_test = function(ext ==? 'md' ? '<sid>test_header_end_md' : '<sid>test_header_end_wiki')
   let i = 0
   for line in lines
-    " let res = s:test_header_end(line, i)
     let res = Header_test(line, i)
     if res > -1 
       return i
