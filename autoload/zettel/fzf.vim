@@ -1,5 +1,3 @@
-" initialize default wiki
-call zettel#vimwiki#initialize_wiki_number()
 " get active VimWiki directory
 let g:zettel_dir = vimwiki#vars#get_wikilocal('path') "VimwikiGet('path',g:vimwiki_current_idx)
 
